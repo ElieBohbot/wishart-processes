@@ -7,11 +7,15 @@ Feuille de route au 22/12/2016
 
 1) Faire numériquement le whishart d=2
 
-        a) prendre alpha entier et vérifier que ça correspond à un produit de brownien
+        a) implémenter l'algorithm d'A.A avec d=2
         
-        b) Simulation d’un Ornstein-Uhlenbeck (schéma d’Euler ?)/ Wishart comme produit d'Ornstein-Uhlenbeck
+        b) prendre alpha entier et vérifier que ça correspond à un produit de brownien
+        
+        c) Simulation d’un Ornstein-Uhlenbeck (schéma d’Euler ?)/ Wishart comme produit d'Ornstein-Uhlenbeck
         
 2) Avancer théoriquement sur la discrétisation (entre 6 et 8 heures)
+
+-- Après les vacances --
 
 3) Cholesky pour le cas général, dim d
 
