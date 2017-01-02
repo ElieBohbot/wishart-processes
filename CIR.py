@@ -7,7 +7,8 @@ import numpy as np
 
 #===============================================================================
 # Simulation d'un processus CIR par l'algorithme de Glasserman (loi exacte)
-# Grille [0,T] subdivisee en 2**n+1 points 
+#   dr(t) = a(b-r(t))dt + sig*sqrt(r(t))dWt
+# Grille [0,T] subdivisee en 2**n+1 points
 #===============================================================================
 def CIR(a,b,sig,n,T):
     t = np.linspace(0,T,2**n+1)

@@ -39,7 +39,3 @@ plt.figure()
 plt.plot(t,CIR(a, b, sig, n, T),'b')
 plt.grid()
 plt.show()
-
-
-
-
