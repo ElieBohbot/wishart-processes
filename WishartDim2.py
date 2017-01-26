@@ -11,8 +11,8 @@ import numpy as np
 from SQB import *
 
 T = 0.01
-N = 50
-a = 1.5
+N = 1
+a = 2.5
 x = np.array([[2,1],[1,1]])
 
 #==============================================================================
@@ -60,18 +60,25 @@ def WIS2_StepByStep_I2(a,X,t_1,t_2):
     y = py.dot(py.dot(p,Y),p)
     return y
     
-def WIS2_StepByStep(a,X,t_1,t_2,A,b):
+
+#on suppose que A=u*I_2 et b=v*I_2  
+def WIS2_StepByStep(a,X,t_1,t_2,u,v):
+    #Calcul de q_t
+    b = v*np.eye(2)
+    t = t_2 - t_1
+    q = np.array([[u**2/(2*v)*(np.exp(2*v*t)-1),0],
+                  [0,u**2/(2*v)*(np.exp(2*v*t)-1)]])
+    c = np.sqrt(q/t)
+    m = np.exp(b*t)
+    x = np.dot(m,np.dot(X,m))
+    c_inv = py.inv(c)
+    x_prime = np.dot(c_inv,np.dot(x,c_inv))
+    Y = WIS2_StepByStep_I2(a,x_prime,t_1,t_2)
+    return np.dot(c,np.dot(Y,c))
     
         
 
-def LaplaceTransform(v,t,a,x):
-    q = np.array([[t,0],[0,0]])
-    z = np.eye(2)-2*py.dot(q,v)
-    w = py.inv(z)
-    y = py.dot(v,w)
-    den = py.det(z)**(a/2.0)
-    num = np.exp(py.trace(py.dot(y,x)))
-    return num/den
+
     
 
     
