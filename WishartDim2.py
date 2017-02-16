@@ -10,11 +10,6 @@ import pylab as py
 import numpy as np
 from SQB import *
 
-T = 0.01
-N = 1
-a = 2.5
-x = np.array([[2,1],[1,1]])
-
 #==============================================================================
 # Algorithm 1 : Exact simulation WIS_2(x,a,0,e^1_2;t)
 #==============================================================================
@@ -76,7 +71,14 @@ def WIS2_StepByStep(a,X,t_1,t_2,u,v):
     Y = WIS2_StepByStep_I2(a,x_prime,t_1,t_2)
     return np.dot(c,np.dot(Y,c))
     
-        
+
+def WIS2_array(a,x,T,N,u,v):
+    t = np.linspace(0,T,N+1)
+    res = np.zeros((N+1,2,2))
+    res[0] = x
+    for i in np.arange(N):
+        res[i+1] = WIS2_StepByStep(a,res[i],t[i],t[i+1],u,v)
+    return res       
 
 
     

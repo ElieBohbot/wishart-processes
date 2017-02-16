@@ -11,6 +11,12 @@ from WishartDim2 import *
 import numpy as np
 import matplotlib.pyplot as plt
 
+
+T = 0.01
+N = 1
+a = 2.5
+x = np.array([[2,1],[1,1]])
+
 M = 200
 N = 50
 
@@ -37,7 +43,7 @@ def expoTrace(v,X):
     return np.exp(py.trace(py.dot(v,X)))
 
 #matrice v fixee    
-z = np.array([[0.3,0.2],[0.2,0.4]])
+z = np.array([[0.03,0.02],[0.02,0.04]])
 u = 0.2
 v = 0.5   
     
@@ -50,7 +56,7 @@ def SimulTransform(lam,i):
     std_approx[i]=np.std(reals)
 
 
-lam = np.linspace(2.8,3,N)
+lam = np.linspace(2,3,N)
 
 for i in np.arange(N):
     SimulTransform(lam,i)
