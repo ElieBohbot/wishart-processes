@@ -47,6 +47,10 @@ def WIS2_array_e1(a,x,T,N):
         res[i+1] = WIS2_StepByStep_e1(a,res[i],t[i],t[i+1])
     return res
 
+#==============================================================================
+# Algorithm 2 : Exact simulation WIS_2(x,a,0,I_2;t)
+#==============================================================================  
+    
 def WIS2_StepByStep_I2(a,X,t_1,t_2):
     y = X
     y = WIS2_StepByStep_e1(a,y,t_1,t_2)
@@ -55,16 +59,29 @@ def WIS2_StepByStep_I2(a,X,t_1,t_2):
     y = py.dot(py.dot(p,Y),p)
     return y
     
+def WIS2_array_I2(a,x,T,N):
+    t = np.linspace(0,T,N+1)
+    res = np.zeros((N+1,2,2))
+    res[0] = x
+    for i in np.arange(N):
+        res[i+1] = WIS2_StepByStep_I2(a,res[i],t[i],t[i+1])
+    return res
+    
+    
+#==============================================================================
+# Algorithm 3 : Exact simulation WIS_2(x,a,b,A;t)
+#============================================================================== 
 
+    
 #on suppose que A=u*I_2 et b=v*I_2  
 def WIS2_StepByStep(a,X,t_1,t_2,u,v):
     #Calcul de q_t
-    b = v*np.eye(2)
     t = t_2 - t_1
     q = np.array([[u**2/(2*v)*(np.exp(2*v*t)-1),0],
                   [0,u**2/(2*v)*(np.exp(2*v*t)-1)]])
     c = np.sqrt(q/t)
-    m = np.exp(b*t)
+    m = np.array([[np.exp(t*v),0],
+                  [0,np.exp(t*v)]])
     x = np.dot(m,np.dot(X,m))
     c_inv = py.inv(c)
     x_prime = np.dot(c_inv,np.dot(x,c_inv))
