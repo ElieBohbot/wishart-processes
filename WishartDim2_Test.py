@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
+------------ WishartDim2_Test.py -------------------
+
 Created on Thu Jan 12 18:27:46 2017
 
 @author: EB
@@ -11,13 +13,34 @@ from WishartDim2 import *
 import numpy as np
 import matplotlib.pyplot as plt
 
+#==============================================================================
+# Test de la simulation WIS_2(x,a,b,A;t) ou A=u*I_2 et b=v*I_2
+# --------------------------------------------------------------
+# On discretise l'intervalle [2,3] avec N points 
+# Pour chaque point lambda de cet intervalle, on calcule la fonction caracteristique
+# au point lambda*z ou z est une matrice fixee avec des coefficients assez faibles 
+# pour eviter une explosion des valeurs de la fonction caracteristique (a cause de l'exponentielle)
+# On calcule egalement la transformee de Laplace empirique en ce point par une methode de 
+# Monte-Carlo avec M simulations.
+# On affiche la transformee de Laplace et sa fonction empirique ainsi que les intervalles 
+# de confiance sur [2,3]    
+#==============================================================================
 
+#Discretisation de [2,3] (N) et nombre de simulations par point (M)
+M = 5000
+N = 30
+
+#Parametres de test
 T = 1.0
 a = 2.5
 x = np.array([[2,1],[1,1]])
 
-M = 500
-N = 50
+#matrice z fixee, parametres u et v    
+z = np.array([[0.04,0.02],[0.02,0.04]])
+u = 0.2
+v = 0.5 
+
+
 
 val_approx = np.zeros(N)
 std_approx = np.zeros(N)
@@ -41,10 +64,7 @@ def LaplaceTransform(z,t,a,x,u,v):
 def expoTrace(v,X):
     return np.exp(py.trace(py.dot(v,X)))
 
-#matrice v fixee    
-z = np.array([[0.04,0.02],[0.02,0.04]])
-u = 0.2
-v = 0.5   
+  
     
 def SimulTransform(lam,i):
     reals = np.zeros(M)
