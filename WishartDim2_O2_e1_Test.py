@@ -12,6 +12,7 @@ import pylab as py
 from WishartDim2_O2 import *
 import numpy as np
 import matplotlib.pyplot as plt
+from time import time
 
 #==============================================================================
 # Test de la simulation WIS_2(x,a,0,e^1_2;t) avec un schema a l'ordre 2
@@ -28,6 +29,8 @@ import matplotlib.pyplot as plt
 # Contrairement a la simulation exacte on constate qu'on n'observe pas de convergence en loi du 
 # Wishart simule, ce qui est en accord avec les resultats theoriques
 #==============================================================================
+
+t_0 = time()
 
 #Discretisation de [2,3] (N) et nombre de simulations par point (M)
 M = 5000
@@ -91,3 +94,7 @@ plt.plot(lam, IC_sup, color='red', label='IC a 95%')
 plt.plot(lam, IC_inf, color='red')
 plt.legend(loc='best')
 plt.show()
+
+t_1 = time()
+t = t_1 - t_0
+print(t)

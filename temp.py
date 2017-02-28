@@ -9,3 +9,7 @@ Created on Thu Feb 23 21:00:35 2017
 
 import pylab as py
 import numpy as np
+
+
+a = np.zeros((1,2))
+b = np.ones((1,3))
