@@ -17,7 +17,7 @@ N = 1000
 # On attend une convergence vers la valeur cible
 #===============================================================================
 T = 10.0
-a = 1.5
+a = 2.0
 x = 5.0
 t = np.linspace(0,T,N+1)
 plt.figure()

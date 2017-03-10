@@ -12,6 +12,7 @@ import pylab as py
 from WishartDim2 import *
 import numpy as np
 import matplotlib.pyplot as plt
+from time import time
 
 #==============================================================================
 # Test de la simulation WIS_2(x,a,0,I_2;t)
@@ -26,17 +27,24 @@ import matplotlib.pyplot as plt
 # de confiance sur [2,3]    
 #==============================================================================
 
+t_0 = time()
+
 #Discretisation de [2,3] (N) et nombre de simulations par point (M)
+M = int(1.e5)
+N = 10
 
-M = 5000
-N = 30
-
+#Parametres de test
 T = 1.0
 a = 2.5
-x = np.array([[2,1],[1,1]])
+x = np.array([[1,0],[0,1]])
+
+#matrice v fixee
+v = np.array([[0.03,0.02],[0.02,0.04]])  
 
 val_approx = np.zeros(N)
 std_approx = np.zeros(N)
+reals = np.zeros(M)
+
 
 #Fonction caracteristique cas a=I2 et b=0
 def LaplaceTransform_I2(v,t,a,x):
@@ -53,19 +61,19 @@ def LaplaceTransform_I2(v,t,a,x):
 def expoTrace(v,X):
     return np.exp(py.trace(py.dot(v,X)))
 
-#matrice v fixee    
-v = np.array([[0.03,0.02],[0.02,0.04]])   
+#Simulation des M Wishart
+simul = np.zeros((M,2,2)) 
+for i in np.arange(M):
+    simul[i]=WIS2_StepByStep_I2(a,x,0,T)  
     
 def SimulTransform(lam,i):
-    reals = np.zeros(M)
     for j in np.arange(M):
-       res = WIS2_StepByStep_I2(a,x,0,T)
-       reals[j] = expoTrace(res,lam[i]*v)
-    val_approx[i]=np.mean(reals)
-    std_approx[i]=np.std(reals)
+       reals[j] = expoTrace(lam[i]*v,simul[j])
+    val_approx[i]= np.mean(reals)
+    std_approx[i]= np.std(reals)
 
 
-lam = np.linspace(2,3,N)
+lam = np.linspace(4,5,N)
 
 for i in np.arange(N):
     SimulTransform(lam,i)
@@ -90,4 +98,6 @@ plt.plot(lam, IC_inf, color='red')
 plt.legend(loc='best')
 plt.show()
 
-    
+t_1 = time()
+t = t_1 - t_0
+print(t)    

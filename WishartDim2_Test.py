@@ -12,6 +12,7 @@ import pylab as py
 from WishartDim2 import *
 import numpy as np
 import matplotlib.pyplot as plt
+from time import time
 
 #==============================================================================
 # Test de la simulation WIS_2(x,a,b,A;t) ou A=u*I_2 et b=v*I_2
@@ -26,24 +27,21 @@ import matplotlib.pyplot as plt
 # de confiance sur [2,3]    
 #==============================================================================
 
-#Discretisation de [2,3] (N) et nombre de simulations par point (M)
-M = 5000
-N = 30
-
 #Parametres de test
 T = 1.0
 a = 2.5
-x = np.array([[2,1],[1,1]])
+x = np.array([[1,0],[0,1]])
+M = int(1.e4)
+N = 20
 
 #matrice z fixee, parametres u et v    
-z = np.array([[0.04,0.02],[0.02,0.04]])
+z = np.array([[0.03,0.02],[0.02,0.04]])
 u = 0.2
 v = 0.5 
 
-
-
 val_approx = np.zeros(N)
 std_approx = np.zeros(N)
+reals = np.zeros(M)
 
 #Fonction caracteristique cas a = u*I2 et b = v*I2
 def LaplaceTransform(z,t,a,x,u,v):
@@ -64,18 +62,21 @@ def LaplaceTransform(z,t,a,x,u,v):
 def expoTrace(v,X):
     return np.exp(py.trace(py.dot(v,X)))
 
-  
+ 
+#Simulation des M Wishart
+simul = np.zeros((M,2,2)) 
+for i in np.arange(M):
+    simul[i]=WIS2_StepByStep(a,x,0,T,u,v)
+
     
 def SimulTransform(lam,i):
-    reals = np.zeros(M)
     for j in np.arange(M):
-       res = WIS2_StepByStep(a,x,0,T,u,v)
-       reals[j] = expoTrace(res,lam[i]*z)
-    val_approx[i]=np.mean(reals)
-    std_approx[i]=np.std(reals)
+       reals[j] = expoTrace(lam[i]*z,simul[j])
+    val_approx[i]= np.mean(reals)
+    std_approx[i]= np.std(reals)
 
 
-lam = np.linspace(2,3,N)
+lam = np.linspace(6,8,N)
 
 for i in np.arange(N):
     SimulTransform(lam,i)
@@ -93,7 +94,6 @@ IC_inf = val_approx - demi_largeur
 
 
 #Affichage 
-#print(WIS2_array(a,x,T,N,u,v))   
 plt.plot(lam, LaplaceTransformFunc(lam), color='blue', label='Laplace Transform')
 plt.plot(lam, val_approx, color='green', label='Laplace Transform emp')
 plt.plot(lam, IC_sup, color='red', label='IC a 95%')

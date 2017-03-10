@@ -16,6 +16,10 @@ from CIR_O2 import *
 # Algorithm 1 : Order 2 scheme for the simulation of WIS_2(x,a,0,e^1_2;t)
 #==============================================================================
 
+def G():
+    U = np.random.rand()
+    return (U < 1./6)*(-np.sqrt(3)) + ((U>1./6)&(U<1./3))*np.sqrt(3)
+
 def WIS2_O2_StepByStep_e1(a,X,t_1,t_2):
     res = np.zeros((2,2))
     if X[1][1]==0:
@@ -31,7 +35,7 @@ def WIS2_O2_StepByStep_e1(a,X,t_1,t_2):
         #
         temp = np.zeros((2,2))
         temp[0][0] = CIR_O2_StepByStep(a-1,t_2-t_1, U[0][0])
-        temp[0][1] = U[0][1] + np.sqrt(t_2-t_1)*np.random.randn()
+        temp[0][1] = U[0][1] + np.sqrt(t_2-t_1)*G()
         temp[1][1]=U[1][1]
         #
         res[0][0] = temp[0][0]+temp[0][1]**2

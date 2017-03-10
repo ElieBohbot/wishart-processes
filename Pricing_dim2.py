@@ -13,14 +13,15 @@ from WishartDim2 import *
 import matplotlib.pyplot as plt
 
 T = 1.0
-N = 30
+N = 500
+M = int(1.e4)
 
-a = 4.5
-x = np.array([[0.04,0.02],[0.02,0.04]])
+a = 1.5
+x = np.array([[0.2,0.03],[0.03,0.2]])
 u = 0.2
 v = 0.5
 
-r = 0.03
+r = 0.0
 sigma = np.sqrt(0.1)
 rho = 0
 
@@ -46,4 +47,20 @@ t = np.linspace(0,T,N)
 plt.plot(t,S[0])
 plt.plot(t,S[1])
 plt.grid()
+
+#Pricer par methode de Monte-Carlo et recuperation de la volatilite implicite
+
+#Option europeenne (K - S^2_T)+
+wis = np.zeros((M,2,2))
+for i in range(M):
+    wis[i] = WIS2_StepByStep(a,x,0,T,u,v)
+
+
+
+
+
+
+
+
+
 

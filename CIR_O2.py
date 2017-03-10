@@ -10,7 +10,7 @@ import numpy as np
 
 #Dans ce cas k = 0
 
-sig = np.sqrt(2)
+sig = 2.0
 
 def Y():
     U = np.random.rand()
@@ -34,7 +34,7 @@ def u1(a,t,x):
     return x + a*t
     
 def u2(a,t,x):
-    return u1(t,x)**2 + sig**2*t*(a*t/2+x)
+    return u1(a,t,x)**2 + sig**2*t*(a*t/2+x)
     
 def pi(a,t,x):
     delta = 1 - u1(a,t,x)**2/u2(a,t,x)

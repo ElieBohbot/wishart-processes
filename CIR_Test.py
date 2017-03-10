@@ -23,6 +23,7 @@ sig = 0.001
 t = np.linspace(0,T,2**n+1)
 plt.figure()
 plt.plot(t,CIR(a, b, sig, n, T),'b')
+plt.axhline(b, color="r", label="valeur cible")
 plt.grid()
 plt.show()
 
@@ -37,5 +38,6 @@ sig = 0.1
 t = np.linspace(0,T,2**n+1)
 plt.figure()
 plt.plot(t,CIR(a, b, sig, n, T),'b')
+plt.axhline(b, color="r", label="valeur moyenne")
 plt.grid()
 plt.show()

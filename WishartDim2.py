@@ -25,14 +25,14 @@ def WIS2_StepByStep_e1(a,X,t_1,t_2):
         res[0][0]=BESQ(a,X[0][0],t_1,t_2)
     else:
         U = np.zeros((2,2))
-        U[0][0]=X[0][0]-X[0][1]**2/X[1][1]
+        U[0][0]=X[0][0]-(X[0][1]**2)/X[1][1]
         U[0][1]=X[0][1]/np.sqrt(X[1][1])
         U[1][1]=X[1][1]
         #
         temp = np.zeros((2,2))
         temp[0][0] = BESQ(a-1,U[0][0],t_1,t_2)
         temp[0][1] = U[0][1] + np.sqrt(t_2-t_1)*np.random.randn()
-        temp[1][1]=U[1][1]
+        temp[1][1]= U[1][1]
         #
         res[0][0] = temp[0][0]+temp[0][1]**2
         res[1][1] = temp[1][1]

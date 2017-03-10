@@ -33,15 +33,21 @@ from time import time
 t_0 = time()
 
 #Discretisation de [2,3] (N) et nombre de simulations par point (M)
-M = 5000
-N = 30
+M = int(1.e4)
+N = 20
+N_array = 10
 
+#Parametres de test
 T = 1.0
-a = 2.5
-x = np.array([[2,1],[1,1]])
+a = 1.1
+x = np.array([[1,0],[0,1]])
+
+#matrice v fixee
+v = np.array([[0.04,0.02],[0.02,0.04]])  
 
 val_approx = np.zeros(N)
 std_approx = np.zeros(N)
+reals = np.zeros(M)
 
 #Fonction caracteristique cas a = e1
 def LaplaceTransform_e1(v,t,a,x):
@@ -61,16 +67,20 @@ def expoTrace(v,X):
 #matrice v fixee    
 v = np.array([[0.03,0.02],[0.02,0.04]])   
     
+#Simulation des M Wishart
+simul = np.zeros((M,N_array,2,2)) 
+for i in np.arange(M):
+    simul[i]=WIS2_O2_array_e1(a,x,T,N_array-1)
+    
+
 def SimulTransform(lam,i):
-    reals = np.zeros(M)
     for j in np.arange(M):
-       res = WIS2_O2_StepByStep_e1(a,x,0,T)
-       reals[j] = expoTrace(res,lam[i]*v)
-    val_approx[i]=np.mean(reals)
-    std_approx[i]=np.std(reals)
+       reals[j] = expoTrace(lam[i]*v,simul[j][N_array-1])
+    val_approx[i]= np.mean(reals)
+    std_approx[i]= np.std(reals)
 
 
-lam = np.linspace(2,3,N)
+lam = np.linspace(0,5,N)
 
 for i in np.arange(N):
     SimulTransform(lam,i)
